@@ -1,0 +1,6 @@
+.vscode
+.DS_Store
+webrtc
+webrtc.dSYM
+server/cert.pem
+server/key.pem
