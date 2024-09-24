@@ -205,6 +205,7 @@ function onServerError(event) {
 }
 
 function getLocalStream() {
+    console.log('..................start getLocalStream');
     var constraints;
     var textarea = document.getElementById('constraints');
     try {
@@ -215,13 +216,13 @@ function getLocalStream() {
         constraints = default_constraints;
     }
     console.log(JSON.stringify(constraints));
-
     // Add local stream
     if (navigator.mediaDevices.getUserMedia) {
         return navigator.mediaDevices.getUserMedia(constraints);
     } else {
         errorUserMediaHandler();
     }
+    console.log('..................end getLocalStream');
 }
 
 function websocketServerConnect() {
@@ -248,7 +249,7 @@ function websocketServerConnect() {
     } else {
         throw new Error ("Don't know how to connect to the signalling server with uri" + window.location);
     }
-    var ws_url = 'wss://' + ws_server + ':' + ws_port
+    var ws_url = 'ws://' + ws_server + ':' + ws_port
     setStatus("Connecting to server " + ws_url);
     ws_conn = new WebSocket(ws_url);
     /* When connected, immediately register with the server */

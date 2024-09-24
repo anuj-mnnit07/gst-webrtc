@@ -21,7 +21,7 @@ if ROOM_ID is None:
     print('--room argument is required')
     sys.exit(1)
 
-sslctx = False
+sslctx = None
 if SERVER_ADDR.startswith(('wss://', 'https://')):
     sslctx = ssl.create_default_context()
     # FIXME
@@ -91,7 +91,7 @@ async def hello():
 print('Our uid is {!r}'.format(PEER_ID))
 
 try:
-    asyncio.get_event_loop().run_until_complete(hello())
+    asyncio.new_event_loop().run_until_complete(hello())
 except websockets.exceptions.InvalidHandshake:
     print('Invalid handshake: are you sure this is a websockets server?\n')
     raise

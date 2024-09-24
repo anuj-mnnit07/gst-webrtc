@@ -38,9 +38,8 @@ static GObject *send_channel;
 static SoupWebsocketConnection *ws_conn = NULL;
 static enum AppState app_state = APP_STATE_UNKNOWN;
 static const gchar *peer_id = NULL;
-// static const gchar *server_url = "wss://webrtc.nirbheek.in:8443";
-static const gchar *server_url = "wss://localhost:8443";
-static gboolean disable_ssl = FALSE;
+static const gchar *server_url = "ws://localhost:8443";
+static gboolean disable_ssl = TRUE;
 static gboolean remote_is_offerer = FALSE;
 
 static GOptionEntry entries[] = {
@@ -365,7 +364,7 @@ start_pipeline (void)
   pipe1 =
       gst_parse_launch ("webrtcbin bundle-policy=max-bundle name=sendrecv "
       STUN_SERVER
-      "videotestsrc ! videoconvert ! queue ! vp8enc deadline=1 ! rtpvp8pay ! "
+      "ksvideosrc ! videoscale ! video/x-raw,format=YUY2,width=640,height=360 ! videoconvert ! queue ! identity sync=true !  vp8enc deadline=1 ! rtpvp8pay ! "
       "queue ! " RTP_CAPS_VP8 "96 ! sendrecv. "
       "audiotestsrc is-live=true wave=red-noise ! audioconvert ! audioresample ! queue ! opusenc ! rtpopuspay ! "
       "queue ! " RTP_CAPS_OPUS "97 ! sendrecv. ", &error);
