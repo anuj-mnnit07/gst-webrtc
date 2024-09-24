@@ -1,3 +1,22 @@
+Windows Setup:
+   1. Download GitBash from https://git-scm.com/download/win and install it.
+   2. Msys2 is on https://github.com/msys2/msys2-installer/releases/download/2024-07-27/msys2-x86_64-20240727.exe
+   3. Open msys2 terminal and install tools using command: 
+   	pacman -S make
+   	pacman -S python3 python3-pip
+   	pacman -S pkg-config
+   
+   4. Install pip websockets using below:
+   	python3 -m pip websockets
+   
+   	Optional: for python3.12 it may require virtualenv setup like this:
+   
+   	python3 -m venv env
+   	source env/bin/activate
+   	python3 -m pip install websockets
+   3. Install python3.11
+
+
 1. Steps to Run Server:
    1. Install python websockets
    ```
