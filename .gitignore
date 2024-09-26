@@ -4,3 +4,6 @@ webrtc
 webrtc.dSYM
 server/cert.pem
 server/key.pem
+env
+server_2
+webrtc.exe

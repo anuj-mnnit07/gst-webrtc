@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#video-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.video-wrapper {
+    width: 48%;
+}
+
+.video-wrapper h2 {
+    margin-bottom: 10px;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    background-color: #000;
+    aspect-ratio: 16 / 9;
+}
+
+#controls, #recording-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+button {
+    margin: 0 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#peer-info {
+    margin-top: 20px;
+}
+
+#peer-id {
+    font-weight: bold;
+}
+
+#downloadRecording {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+button:enabled {
+    opacity: 0.5;
+
+}
