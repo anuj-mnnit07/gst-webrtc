@@ -42,9 +42,9 @@ def get_offer_sdp(peer_id):
     print("Sent: " + offer)
     return offer
 
-async def hello():
+async def hello(client_peer_id):
     async with websockets.connect(SERVER_ADDR, ssl=sslctx) as ws:
-        await ws.send('HELLO ' + PEER_ID)
+        await ws.send('HELLO ' + client_peer_id)
         assert(await ws.recv() == 'HELLO')
 
         await ws.send('ROOM {}'.format(ROOM_ID))
@@ -91,7 +91,9 @@ async def hello():
 print('Our uid is {!r}'.format(PEER_ID))
 
 try:
-    asyncio.new_event_loop().run_until_complete(hello())
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(asyncio.gather(hello(PEER_ID)))
 except websockets.exceptions.InvalidHandshake:
     print('Invalid handshake: are you sure this is a websockets server?\n')
     raise

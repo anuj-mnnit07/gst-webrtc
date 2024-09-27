@@ -27,12 +27,18 @@
                 <h2>Scope Camera</h2>
                 <!-- Video element for remote camera, set to autoplay and play inline -->
                 <video id="remoteCameraFeed" autoplay playsinline></video>
+                
+                <!-- Display area for the peer ID -->
+                <div id="peer-info">Our id is <span id="peer-id-scope-camera">unknown</span></div>
             </div>
             <!-- Wrapper for the local (scope) camera feed -->
             <div class="video-wrapper">
                 <h2>Camera Feed</h2>
                 <!-- Video element for local camera, set to autoplay and play inline -->
-                <video id="stream" autoplay playsinline></video>
+                <video id="cameraFeed" autoplay playsinline></video>
+                
+                <!-- Display area for the peer ID -->
+                <div id="peer-info">Our id is <span id="peer-id-camera-feed">unknown</span></div>
             </div>
         </div>
         <!-- Hidden canvas element used for recording both video streams -->
@@ -52,9 +58,6 @@
             <button id="stopRecording">Stop Recording</button>
             <a id="downloadRecording" class="btn btn-success">Download Recording (MP4)</a>
         </div>
-
-        <!-- Display area for the peer ID -->
-        <div id="peer-info">Our id is <span id="peer-id">unknown</span></div>
     </div>
 
     <!-- Hidden elements for WebRTC functionality -->
@@ -79,6 +82,7 @@
     </div>
 
     <!-- Link to the main JavaScript file -->
+    <script src="rtsp_webrtc.js"></script>
     <script src="webrtc.js"></script>
     <script src="recorder_element.js"></script>
     <!-- <script src="recorder_screen.js"></script> -->

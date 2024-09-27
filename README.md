@@ -61,7 +61,9 @@
    4. Get the peer-id from server/js/index.html launched in step 2.6 above and run the client with below command
    ```bash
    # This command must be run from command prompt (not from msys2 terminal)
+   # command for running scope camera
    ./webrtc --peer-id <PEER_ID>
+   ./webrtc --peer-id <PEER_ID_CAMERA_FEED> --enable-rtsp 
    # on the browser it asks for allowing permission, wait for 3-5 seconds on windows before giving it to permission. Once Mic/Camera permission given, it will start playing camera feed.
    ```
    5. Currently it runs with ksvideosrc and audiotestsrc. Modify videotestsrc with v4l2src (for linux) and ksvideosrc (for windows) or other source based on camera source. Grant the audio/video permission to the browser. 

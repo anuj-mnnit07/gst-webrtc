@@ -41,6 +41,7 @@ static const gchar *peer_id = NULL;
 static const gchar *server_url = "ws://localhost:8443";
 static gboolean disable_ssl = TRUE;
 static gboolean remote_is_offerer = FALSE;
+static gboolean enable_rtsp_source = FALSE;
 
 static GOptionEntry entries[] = {
   {"peer-id", 0, 0, G_OPTION_ARG_STRING, &peer_id,
@@ -50,6 +51,7 @@ static GOptionEntry entries[] = {
   {"disable-ssl", 0, 0, G_OPTION_ARG_NONE, &disable_ssl, "Disable ssl", NULL},
   {"remote-offerer", 0, 0, G_OPTION_ARG_NONE, &remote_is_offerer,
       "Request that the peer generate the offer and we'll answer", NULL},
+  {"enable-rtsp", 0, 0, G_OPTION_ARG_NONE, &enable_rtsp_source, "Enable RTSP camera as source", NULL},
   {NULL},
 };
 
@@ -361,13 +363,21 @@ start_pipeline (void)
   GstStateChangeReturn ret;
   GError *error = NULL;
 
-  pipe1 =
-      gst_parse_launch ("webrtcbin bundle-policy=max-bundle name=sendrecv "
+  const char* rtsp_pipeline = "webrtcbin bundle-policy=max-bundle name=sendrecv "
+      STUN_SERVER
+      "rtspsrc location=rtsp://127.0.0.1:8554/mystream ! rtpjitterbuffer ! rtph264depay ! queue ! avdec_h264 ! videoconvert !  vp8enc deadline=1 ! rtpvp8pay ! "
+      "queue ! " RTP_CAPS_VP8 "96 ! sendrecv. ";
+  
+  const char* camera_pipeline = "webrtcbin bundle-policy=max-bundle name=sendrecv "
       STUN_SERVER
       "ksvideosrc ! videoscale ! video/x-raw,format=YUY2,width=640,height=360 ! videoconvert ! queue ! identity sync=true !  vp8enc deadline=1 ! rtpvp8pay ! "
-      "queue ! " RTP_CAPS_VP8 "96 ! sendrecv. "
-      "audiotestsrc is-live=true wave=red-noise ! audioconvert ! audioresample ! queue ! opusenc ! rtpopuspay ! "
-      "queue ! " RTP_CAPS_OPUS "97 ! sendrecv. ", &error);
+      "queue ! " RTP_CAPS_VP8 "96 ! sendrecv. ";
+
+  if(enable_rtsp_source) {
+    pipe1 = gst_parse_launch(rtsp_pipeline, &error);
+  } else {
+    pipe1 = gst_parse_launch(camera_pipeline, &error);
+  }
 
   if (error) {
     g_printerr ("Failed to parse launch: %s\n", error->message);

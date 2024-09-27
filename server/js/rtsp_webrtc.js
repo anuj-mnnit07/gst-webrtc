@@ -1,4 +1,5 @@
-var webrtc = (function() {
+var rtsp_webrtc = (function() {
+
 // Set this to override the automatic detection in websocketServerConnect()
 var ws_server; // WebSocket server address
 var ws_port;   // WebSocket server port
@@ -256,7 +257,7 @@ function websocketServerConnect() {
 
     // Generate or retrieve the peer ID
     peer_id = default_peer_id || getOurId();
-    document.getElementById("peer-id-scope-camera").textContent = peer_id;
+    document.getElementById("peer-id-camera-feed").textContent = peer_id;
 
     // Determine the WebSocket server address and port
     ws_port = ws_port || '8443';
@@ -275,7 +276,7 @@ function websocketServerConnect() {
 
     // When the WebSocket opens, send HELLO message
     ws_conn.addEventListener('open', (event) => {
-        document.getElementById("peer-id-scope-camera").textContent = peer_id;
+        document.getElementById("peer-id-camera-feed").textContent = peer_id;
         ws_conn.send('HELLO ' + peer_id);  // Register peer with the server
         setStatus("Registering with server");
         setConnectButtonState("Connect");  // Change button state to 'Connect'
@@ -289,7 +290,7 @@ function websocketServerConnect() {
 
 // Handle remote media stream tracks
 function onRemoteTrack(event) {
-    var remoteVideoElement = document.getElementById("remoteCameraFeed");
+    var remoteVideoElement = document.getElementById("cameraFeed");
     if (remoteVideoElement.srcObject !== event.streams[0]) {
         console.log('Incoming stream');
         remoteVideoElement.srcObject = event.streams[0];  // Set the source of the remote stream
@@ -388,12 +389,12 @@ function createCall(msg) {
 
 // Initialize the WebRTC connection when the page loads
 window.onload = function() {
-    rtsp_webrtc.connect();
+    webrtc.websocketServerConnect();
     websocketServerConnect();  // Connect to the WebSocket server
     document.getElementById("peer-connect-button").addEventListener("click", onConnectClicked);  // Set the 'Connect' button event handler
 };
 return {
-    connect: websocketServerConnect,
-}
-
+        connect: websocketServerConnect,
+    }
 })();
+
